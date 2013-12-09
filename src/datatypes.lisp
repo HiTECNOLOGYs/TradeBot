@@ -19,3 +19,10 @@
                  :pair pair
                  :rate rate
                  :amount amount))
+
+(defun format-orders (orders)
+  (format t "~%~{~{~A~5T | ~A~20T | ~A~%~}~}"
+          (loop for order in orders
+                collecting (list (order-type order)
+                                 (coerce (order-rate order) 'float)
+                                 (coerce (order-amount order) 'float)))))
