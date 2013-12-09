@@ -62,8 +62,17 @@
     (jsown:val (jsown:parse response) "ticker")))
 
 (defun get-global-trades-history (coin)
-  (let ((response (drakma:http-request (get-info-api-url coin :history))))
-    (jsown:parse response)))
+  (let ((response (jsown:parse (drakma:http-request (get-info-api-url coin :history)))))
+    (loop for order in response
+          for type = (jsown:val order "trade_type")
+          for item = (jsown:val order "item")
+          for price-currency = (jsown:val order "price_currency")
+          collecting (make-order (cond ((equal "bid" type) "sell")
+                                       ((equal "ask" type) "buy"))
+                                 (let ((*print-case* :downcase))
+                                   (format nil "~A_~A" item price-currency))
+                                 (jsown:val order "price")
+                                 (jsown:val order "amount")))))
 
 (defun get-trades-history ()
   (let ((response (send-trade-api-request "TradeHistory")))
