@@ -1,7 +1,9 @@
 (in-package :tradebot)
 
 (defclass Order ()
-  ((type :initarg :type
+  ((id :initarg :id
+       :accessor order-id)
+   (type :initarg :type
          :reader order-type)
    (pair :initarg :pair
          :reader order-pair)
@@ -10,8 +12,9 @@
    (amount :initarg :amount
            :reader order-amount)))
 
-(defun make-order (type pair rate amount)
+(defun make-order (type pair rate amount &optional id)
   (make-instance 'Order
+                 :id id
                  :type type
                  :pair pair
                  :rate rate

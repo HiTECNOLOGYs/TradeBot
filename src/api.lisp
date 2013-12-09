@@ -72,16 +72,18 @@
                                  (let ((*print-case* :downcase))
                                    (format nil "~A_~A" item price-currency))
                                  (jsown:val order "price")
-                                 (jsown:val order "amount")))))
+                                 (jsown:val order "amount")
+                                 (jsown:val order "tid")))))
 
 (defun get-trades-history ()
   (let ((response (send-trade-api-request "TradeHistory")))
-    (loop for keyword in (jsown:keywords response)
-          for order = (jsown:val response keyword)
+    (loop for tid in (jsown:keywords response)
+          for order = (jsown:val response tid)
           collecting (make-order (jsown:val order "type")
                                  (jsown:val order "pair")
                                  (coerce (jsown:val order "rate") 'float)
-                                 (coerce (jsown:val order "amount") 'float)))))
+                                 (coerce (jsown:val order "amount") 'float)
+                                 tid))))
 
 (defun get-last-order (orders-history)
   (labels

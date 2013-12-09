@@ -8,8 +8,10 @@
     (- buy-amount amount)))
 
 (defun open-order (order)
-  (send-trade-api-request "Trade"
-                          "pair" (order-pair order)
-                          "type" (order-type order)
-                          "rate" (order-rate order)
-                          "amount" (order-amount order)))
+  (let ((response
+         (send-trade-api-request "Trade"
+                                 "pair" (order-pair order)
+                                 "type" (order-type order)
+                                 "rate" (order-rate order)
+                                 "amount" (order-amount order))))
+    (setf (order-id order) (jsown:val response "order_id"))))
