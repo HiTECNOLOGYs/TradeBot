@@ -125,8 +125,9 @@
 
 (defun get-balance ()
   (let ((funds (jsown:val (send-trade-api-request "getInfo") "funds")))
-    (list (coerce (jsown:val funds "btc") 'float)
-          (coerce (jsown:val funds "ltc") 'float))))
+    (list :usd (coerce (jsown:val funds "usd") 'float)
+          :btc (coerce (jsown:val funds "btc") 'float)
+          :ltc (coerce (jsown:val funds "ltc") 'float))))
 
 (defun get-current-sell-price (coin)
   (let ((response (get-ticker coin)))
