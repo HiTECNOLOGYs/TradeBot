@@ -123,6 +123,15 @@
   (let ((order (get-last-buy-order orders-history)))
     (reduce #'+ order :key #'order-amount)))
 
+(defun get-last-balance (orders-history)
+  (let ((last-operation (order-type (first orders-history))))
+    (cond
+      ((equal last-operation "sell") (* (get-last-sell-amount orders-history)
+                                        (get-last-sell-price orders-history)))
+      ((equal last-operation "buy")  (* (get-last-buy-amount orders-history)
+                                        (get-last-buy-price orders-history)))
+      (t (error "Unknown order type: ~S" last-operation)))))
+
 (defun get-balance ()
   (let ((funds (jsown:val (send-trade-api-request "getInfo") "funds")))
     (list :usd (coerce (jsown:val funds "usd") 'float)
