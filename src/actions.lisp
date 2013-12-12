@@ -62,3 +62,6 @@
     (calculate-profit (getf (get-balance) coin)
                       rate
                       last-balance)))
+
+(defun get-current-orders-ratio (coin)
+  (get-orders-types-ratio (count-orders-types (get-global-trades-history coin))))
