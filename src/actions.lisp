@@ -1,11 +1,12 @@
 (in-package :tradebot)
 
-(defun calculate-profit (amount sell buy)
-  (let* ((sell-profit (* amount sell
-                         (/ (- 100 +fee+) 100)))
-         (buy-amount  (* (/ sell-profit buy)
-                         (/ (- 100 +fee+) 100))))
-    (- buy-amount amount)))
+(defun fee- (&rest numbers)
+  (apply #'* (/ (- 100 +fee+) 100)
+         numbers))
+
+(defun calculate-profit (amount rate last-balance)
+  (let* ((new-balance (fee- amount rate)))
+    (- new-balance last-balance)))
 
 (defun open-order (order)
   (let ((response
