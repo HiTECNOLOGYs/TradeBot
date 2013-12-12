@@ -12,9 +12,31 @@
          (send-trade-api-request "Trade"
                                  "pair" (order-pair order)
                                  "type" (order-type order)
-                                 "rate" (order-rate order)
-                                 "amount" (order-amount order))))
+                                 "rate" (write-to-string (order-rate order))
+                                 "amount" (write-to-string (order-amount order)))))
     (setf (order-id order) (jsown:val response "order_id"))))
+
+(defun %get-pair (coin)
+  (case coin
+    (:ltc "ltc_usd")
+    (:btc "btc_usd")
+    (otherwise "Dunno such coin: ~S" coin)))
+
+(defun sell-all (coin)
+  (let ((balance (getf (get-balance) coin))
+        (rate (get-current-sell-price coin)))
+    (open-order (make-order "sell"
+                            (%get-pair coin)
+                            rate
+                            balance))))
+
+(defun buy-for-all (coin)
+  (let ((balance (getf (get-balance) :usd))
+        (rate (get-current-buy-price coin)))
+    (open-order (make-order "buy"
+                            (%get-pair coin)
+                            rate
+                            (/ (floor balance) rate)))))
 
 (defun count-orders-types (orders-history)
   (loop for order in orders-history
