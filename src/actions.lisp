@@ -15,7 +15,8 @@
                                  "type" (order-type order)
                                  "rate" (write-to-string (order-rate order))
                                  "amount" (write-to-string (order-amount order)))))
-    (setf (order-id order) (jsown:val response "order_id"))))
+    (setf (order-id order) (jsown:val response "order_id"))
+    order))
 
 (defun %get-pair (coin)
   (case coin
