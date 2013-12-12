@@ -51,3 +51,14 @@
 (defun get-orders-types-ratio (orders-types-count)
   (/ (getf orders-types-count :buy)
      (getf orders-types-count :sell)))
+
+(defun get-current-profit (coin operation)
+  (let* ((orders (get-trades-history))
+         (last-balance (get-last-balance orders))
+         (rate (case operation
+                 (:buy (get-current-buy-price coin))
+                 (:sell (get-current-sell-price coin))
+                 (otherwise (error "Dunno such operation: ~S" operation)))))
+    (calculate-profit (getf (get-balance) coin)
+                      rate
+                      last-balance)))
