@@ -115,6 +115,14 @@
   (let ((order (get-last-buy-order orders-history)))
     (avg order #'order-rate)))
 
+(defun get-last-sell-amount (orders-history)
+  (let ((order (get-last-sell-order orders-history)))
+    (reduce #'+ order :key #'order-amount)))
+
+(defun get-last-buy-amount (orders-history)
+  (let ((order (get-last-buy-order orders-history)))
+    (reduce #'+ order :key #'order-amount)))
+
 (defun get-balance ()
   (let ((funds (jsown:val (send-trade-api-request "getInfo") "funds")))
     (list (coerce (jsown:val funds "btc") 'float)
