@@ -24,7 +24,7 @@
 
 (define-constant +fee+ 0.2)
 
-(define-constant +api-key+ "99AHJ536-JLF06W2L-975HI9FI-1S5G9FI5-Y1BPQLZK"
+(define-constant +api-key+ "api-key"
   :test #'equal)
-(define-constant +api-secret+ "e8baa267afe0cc83d82a3b3cf1c680a43df472d263de7618f539c70fc597c9f0"
+(define-constant +api-secret+ "api-secret"
   :test #'equal)
