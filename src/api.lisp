@@ -81,8 +81,8 @@
           for order = (jsown:val response tid)
           collecting (make-order (jsown:val order "type")
                                  (jsown:val order "pair")
-                                 (coerce (jsown:val order "rate") 'float)
-                                 (coerce (jsown:val order "amount") 'float)
+                                 (coerce (jsown:val order "rate") 'double-float)
+                                 (coerce (jsown:val order "amount") 'double-float)
                                  tid))))
 
 (defun get-last-order (orders-history)
@@ -134,15 +134,15 @@
 
 (defun get-balance ()
   (let ((funds (jsown:val (send-trade-api-request "getInfo") "funds")))
-    (list :usd (coerce (jsown:val funds "usd") 'float)
-          :btc (coerce (jsown:val funds "btc") 'float)
-          :ltc (coerce (jsown:val funds "ltc") 'float))))
+    (list :usd (coerce (jsown:val funds "usd") 'double-float)
+          :btc (coerce (jsown:val funds "btc") 'double-float)
+          :ltc (coerce (jsown:val funds "ltc") 'double-float))))
 
 (defun get-current-sell-price (coin)
   (let ((response (get-ticker coin)))
-    (coerce (jsown:val response "sell") 'float)))
+    (coerce (jsown:val response "sell") 'double-float)))
 
 (defun get-current-buy-price (coin)
   (let ((response (get-ticker coin)))
-    (coerce (jsown:val response "buy") 'float)))
+    (coerce (jsown:val response "buy") 'double-float)))
 

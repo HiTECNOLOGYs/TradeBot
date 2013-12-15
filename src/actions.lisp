@@ -22,19 +22,19 @@
   (case coin
     (:ltc "ltc_usd")
     (:btc "btc_usd")
-    (otherwise "Dunno such coin: ~S" coin)))
+    (otherwise (error "Dunno such coin: ~S" coin))))
 
-(defun sell-all (coin)
+(defun sell-all (coin &optional rate)
   (let ((balance (getf (get-balance) coin))
-        (rate (get-current-sell-price coin)))
+        (rate (or rate (get-current-sell-price coin))))
     (open-order (make-order "sell"
                             (%get-pair coin)
                             rate
                             balance))))
 
-(defun buy-for-all (coin)
+(defun buy-for-all (coin &optional rate)
   (let ((balance (getf (get-balance) :usd))
-        (rate (get-current-buy-price coin)))
+        (rate (or rate (get-current-buy-price coin))))
     (open-order (make-order "buy"
                             (%get-pair coin)
                             rate
@@ -59,9 +59,10 @@
                  (:buy (get-current-buy-price coin))
                  (:sell (get-current-sell-price coin))
                  (otherwise (error "Dunno such operation: ~S" operation)))))
-    (calculate-profit (getf (get-balance) coin)
-                      rate
-                      last-balance)))
+    (values (calculate-profit (getf (get-balance) coin)
+                              rate
+                              last-balance)
+            rate)))
 
 (defun get-current-orders-ratio (coin)
   (get-orders-types-ratio (count-orders-types (get-global-trades-history coin))))
