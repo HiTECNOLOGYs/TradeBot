@@ -6,6 +6,7 @@
 
 (defsystem :tradebot
   :author "Mark Fedurin <hitecnologys@gmail.com>"
+  :license "Public Domain"
   :depends-on (:drakma
                :jsown
                :ironclad
