@@ -13,8 +13,8 @@
          (send-trade-api-request "Trade"
                                  "pair" (order-pair order)
                                  "type" (order-type order)
-                                 "rate" (write-to-string (order-rate order))
-                                 "amount" (write-to-string (order-amount order)))))
+                                 "rate" (format nil "~F" (order-rate order))
+                                 "amount" (format nil "~F" (order-amount order)))))
     (setf (order-id order) (jsown:val response "order_id"))
     order))
 
